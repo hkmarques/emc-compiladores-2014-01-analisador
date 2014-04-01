@@ -14,3 +14,9 @@
 #define ENTAO 14
 #define SENAO 15
 #define EXECUTE 16
+#define GE 17
+#define EQ 18
+#define DIFF 19
+#define OR 20
+#define AND 21
+#define ASSIGN 22

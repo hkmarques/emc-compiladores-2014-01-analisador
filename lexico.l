@@ -14,13 +14,14 @@ int numLinha=1;
 /*Secao do Flex destinada a definicoes regulares */
 
 DIGIT [0-9]
-CHAR[a-zA-Z]
+CHAR [a-zA-Z]
 ID [_a-zA-Z][_a-zA-Z0-9]*
+STRING_DOUBLE \"[^([^\]\")]*\"
+STRING_SINGLE \'[^([^\]\')]*\'
+ASSIGNMENT [^<>!=]=[^<>!=]
 %x comentario
-%x literal_string_single_quote
-%x literal_string_double_quote
-%%
 
+%%
 
 {DIGIT}+    {
  	             /* yytext armazena o lexema encontrado na entrada*/	
@@ -40,21 +41,38 @@ ID [_a-zA-Z][_a-zA-Z0-9]*
 <comentario>"*"+"/"    BEGIN(INITIAL);  
      
 "["			return '[';
-			
    
 "]"			return ']';
    			
-
 "("			return '(';
 			
-   
 ")"			return ')';
-   				
+
+"{"			return '{';
+
+"}"			return '}';
 
 "<="	                return LE;
 
+">="			return GE;
+
+"=="			return EQ;
+
+{ASSIGNMENT}		return ASSIGN;
+
+"!="			return DIFF;
+
+"ou"			return OR;
+
+"e"			return AND;
 
 "+"			return '+';
+
+"-"			return '-';
+
+"*"			return '*';
+
+"/"			return '/';
 
 "programa"	        return PROGRAMA;
 
@@ -80,39 +98,20 @@ ID [_a-zA-Z][_a-zA-Z0-9]*
 
 "execute"		return EXECUTE;
 
-\"			BEGIN(literal_string_double_quote);
-<literal_string_double_quote>\n 	{
-						strcpy(msg, "Erro: a cadeira de caracteres ocupa mais de uma linha");
-						yyerror(msg);
-					}
+{STRING_DOUBLE}		return CONST_STRING;
 
-<literal_string_double_quote>[^\\]\" 	{
-						BEGIN(INITIAL);
-						return CONST_STRING;
-					}
-
-\'			BEGIN(literal_string_single_quote);
-<literal_string_single_quote>\n 	{
-						strcpy(msg, "Erro: a cadeira de caracteres ocupa mais de uma linha");
-						yyerror(msg);
-					}
-
-<literal_string_single_quote>[^\\]\' 	{
-						BEGIN(INITIAL);
-						return CONST_STRING;
-					}
+{STRING_SINGLE}		return CONST_STRING;
 
 {ID}                    return IDENTIFICADOR;
 
 \n 			numLinha++;
 
-[ \t]+ 	; /* consome caracteres de espaco */
+[ \t]+ 			; /* consome caracteres de espaco */
 
-<<EOF>> return(EOF);
+<<EOF>> 		return(EOF);
 
 .			{ 
-				
-				printf("Caractere invalido: %s\n", yytext);
+				printf("Caractere invalido na linha %d: %s\n", numLinha, yytext);
 				exit(1);
 			}		
 

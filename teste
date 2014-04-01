@@ -4,5 +4,15 @@ que ocupa 2 linhas */
 "asfasfasdaf"
 'asdf'
 execute senao entao se
-escreva return car int
+escreva retorne car int
+execute {
+	escreva "aaaaaaaa"
+	leia _abacaxi
+	se (_abacaxi == 333) {
+		beterraba = 123123
+	} senao {
+		berinjela = 4345345
+	}
+}
+
 leia ?

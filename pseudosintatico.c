@@ -17,7 +17,7 @@ void yyerror(char *msg){
 int tok;     
 int main(int argc, char** argv){
    if(argc!=2)
-	yyerror("Uso correto: ./pseudoSintatico nome_arq_entrada");
+	yyerror("Uso correto: ./pseudosintatico nome_arq_entrada");
    yyin=fopen(argv[1], "r");
    if(!yyin){
 	yyerror("arquivo não pode ser aberto\n");
@@ -27,64 +27,100 @@ int main(int argc, char** argv){
 	tok=yylex();
 	switch(tok){
         case IDENTIFICADOR:
-	     printf("Encontei o identificador %s na linha %d \n", yytext,numLinha);
+	     printf("Encontrei o identificador %s na linha %d \n", yytext,numLinha);
              break;	
 	case '[':
-	     printf("Encontei um [ na linha %d \n", numLinha);
+	     printf("Encontrei um [ na linha %d \n", numLinha);
              break;
 	case INTCONST:
 	     printf("Encontrei um número inteiro: %s na linha %d \n", yytext, numLinha);
 	     break;
 	case ']':
-             printf("Encontei um ] na linha %d\n", numLinha );
+             printf("Encontrei um ] na linha %d\n", numLinha );
              break;
 	case '(':
-	     printf("Encontei um ( na linha %d \n", numLinha);
+	     printf("Encontrei um ( na linha %d \n", numLinha);
              break;
 	case ')':
-	     printf("Encontei um ) na linha %d \n", numLinha);
+	     printf("Encontrei um ) na linha %d \n", numLinha);
              break;
         case LE:
-	     printf("Encontei um  %s na linha %d\n", yytext, numLinha);
+	     printf("Encontrei um  %s na linha %d\n", yytext, numLinha);
              break;
 	case PROGRAMA:
-	     printf("Encontei a palavra reservada %s na linha %d \n", yytext, numLinha);
+	     printf("Encontrei a palavra reservada %s na linha %d \n", yytext, numLinha);
              break;
 	case LEIA:
-	     printf("Encontei a palavra reservada %s na linha %d \n", yytext, numLinha);
+	     printf("Encontrei a palavra reservada %s na linha %d \n", yytext, numLinha);
              break;
 	case ENQUANTO:
-             printf("Encontei a palavra reservada %s na linha %d\n", yytext, numLinha);
+             printf("Encontrei a palavra reservada %s na linha %d\n", yytext, numLinha);
              break;
 	case TYPE_CAR:
-             printf("Encontei a palavra reservada %s na linha %d\n", yytext, numLinha);
+             printf("Encontrei a palavra reservada %s na linha %d\n", yytext, numLinha);
              break;
 	case TYPE_INT:
-             printf("Encontei a palavra reservada %s na linha %d\n", yytext, numLinha);
+             printf("Encontrei a palavra reservada %s na linha %d\n", yytext, numLinha);
              break;
 	case RETURN:
-             printf("Encontei a palavra reservada %s na linha %d\n", yytext, numLinha);
+             printf("Encontrei a palavra reservada %s na linha %d\n", yytext, numLinha);
              break;
 	case ESCREVA:
-             printf("Encontei a palavra reservada %s na linha %d\n", yytext, numLinha);
+             printf("Encontrei a palavra reservada %s na linha %d\n", yytext, numLinha);
              break;
 	case NOVALINHA:
-             printf("Encontei uma quebra de linha na linha %d\n", numLinha);
+             printf("Encontrei uma quebra de linha na linha %d\n", numLinha);
              break;
 	case SE:
-             printf("Encontei a palavra reservada %s na linha %d\n", yytext, numLinha);
+             printf("Encontrei a palavra reservada %s na linha %d\n", yytext, numLinha);
              break;
 	case ENTAO:
-             printf("Encontei a palavra reservada %s na linha %d\n", yytext, numLinha);
+             printf("Encontrei a palavra reservada %s na linha %d\n", yytext, numLinha);
              break;
 	case SENAO:
-             printf("Encontei a palavra reservada %s na linha %d\n", yytext, numLinha);
+             printf("Encontrei a palavra reservada %s na linha %d\n", yytext, numLinha);
              break;
 	case EXECUTE:
-             printf("Encontei a palavra reservada %s na linha %d\n", yytext, numLinha);
+             printf("Encontrei a palavra reservada %s na linha %d\n", yytext, numLinha);
              break;
 	case CONST_STRING:
-             printf("Encontei a cadeia de caracteres \"%s\" na linha %d\n", yytext, numLinha);
+             printf("Encontrei a cadeia de caracteres \"%s\" na linha %d\n", yytext, numLinha);
+             break;
+	case ASSIGN:
+             printf("Encontrei um = na linha %d\n", numLinha);
+             break;
+	case '{':
+             printf("Encontrei um { na linha %d\n", numLinha);
+             break;
+	case '}':
+             printf("Encontrei um } na linha %d\n", numLinha);
+             break;
+	case '+':
+             printf("Encontrei um + na linha %d\n", numLinha);
+             break;
+	case '-':
+             printf("Encontrei um - na linha %d\n", numLinha);
+             break;
+	case '*':
+             printf("Encontrei um * na linha %d\n", numLinha);
+             break;
+	case '/':
+             printf("Encontrei um / na linha %d\n", numLinha);
+             break;
+	case GE:
+             printf("Encontrei um >= na linha %d\n", numLinha);
+             break;
+	case EQ:
+             printf("Encontrei um == na linha %d\n", numLinha);
+             break;
+	case DIFF:
+             printf("Encontrei um != na linha %d\n", numLinha);
+             break;
+	case OR:
+             printf("Encontrei a palavra reservada %s na linha %d\n", yytext, numLinha);
+             break;
+	case AND:
+             printf("Encontrei a palavra reservada %s na linha %d\n", yytext, numLinha);
              break;
 	case EOF: exit(1);
 	}
