@@ -10,7 +10,7 @@ execute {
 	leia _abacaxi
 	se (_abacaxi == 333) {
 		beterraba = 123123
-	} senao {
+	} senao se (nao_definida != 'q')    {
 		berinjela = 4345345
 	}
 }
