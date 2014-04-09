@@ -17,7 +17,7 @@ void yyerror( char const *s);
 
 %start Programa /* Inidica que o simbolo incial da gramatica e programm */  
 
-%token escreva leia ou retorne enquanto inteiro se senao execute entao programa novalinha carconst intconst car ID cadeiaCaracteres e/* Definicao de terminais (que não apenas caracteres), com o uso da diretiva
+%token ESCREVA LEIA OU RETORNE ENQUANTO SE SENAO EXECUTE ENTAO PROGRAMA NOVALINHA CONST_STRING INTCONST TYPE_CAR TYPE_INT IDENTIFICADOR E ASSIGN DIFF EQ GE LE/* Definicao de terminais (que não apenas caracteres), com o uso da diretiva
                               %token. Ha outras opcoes para definicao de tokens (especificando ordem de associacao e 
 			      prescedencia de operadores -  ver secao 3.2 do manual do Bison*/
 
@@ -29,15 +29,15 @@ void yyerror( char const *s);
 Programa 		:	DeclFuncVar
 				| DeclProg
 				;
-DeclFuncVar             :       Tipo ID DeclVar ';' DeclFuncVar
-                                | Tipo ID intconst DeclVar ';' DeclFuncVar
-                                | Tipo ID DeclFunc DeclFuncVar
+DeclFuncVar             :       Tipo IDENTIFICADOR DeclVar ';' DeclFuncVar
+                                | Tipo IDENTIFICADOR INTCONST DeclVar ';' DeclFuncVar
+                                | Tipo IDENTIFICADOR DeclFunc DeclFuncVar
                                 |
                                 ;
-DeclProg                :       programa Bloco
+DeclProg                :       PROGRAMA Bloco
                                 ;
-DeclVar                 :       ',' ID DeclVar
-                                | ',' ID intconst DeclVar
+DeclVar                 :       ',' IDENTIFICADOR DeclVar
+                                | ',' IDENTIFICADOR INTCONST DeclVar
                                 |
                                 ;
 DeclFunc                :       '(' ListaParametros ')' Bloco
@@ -45,58 +45,58 @@ DeclFunc                :       '(' ListaParametros ')' Bloco
 ListaParametros         :       
                                 | ListaParametrosCont
                                 ;
-ListaParametrosCont     :       Tipo ID
-                                | Tipo ID '['']'
-                                | Tipo ID ',' ListaParametrosCont
-                                | Tipo ID '['']' ',' ListaParametrosCont
+ListaParametrosCont     :       Tipo IDENTIFICADOR
+                                | Tipo IDENTIFICADOR '['']'
+                                | Tipo IDENTIFICADOR ',' ListaParametrosCont
+                                | Tipo IDENTIFICADOR '['']' ',' ListaParametrosCont
                                 ;
 Bloco                   :       '{' ListaDeclVar ListaComando '}'
                                 | '{' ListaDeclVar '}'
                                 ;
 ListaDeclVar            :       
-                                | Tipo ID DeclVar ';' ListaDeclVar
-                                | Tipo ID intconst DeclVar ';' ListaDeclVar
+                                | Tipo IDENTIFICADOR DeclVar ';' ListaDeclVar
+                                | Tipo IDENTIFICADOR INTCONST DeclVar ';' ListaDeclVar
                                 ;
-Tipo                    :       inteiro
-                                | car
+Tipo                    :       TYPE_INT
+                                | TYPE_CAR
                                 ;
 ListaComando            :       Comando
                                 | Comando ListaComando
                                 ;
 Comando                 :       ';'
                                 | Expr ';'
-                                | retorne Expr ';'
-                                | leia LValueExpr ';'
-                                | escreva Expr ';'
-                                | escreva '"'cadeiaCaracteres'"' ';'
-                                | novalinha ';'
-                                | se '(' Expr ')' entao Comando
-                                | se '(' Expr ')' entao Comando senao Comando
-                                | enquanto '(' Expr ')' execute Comando
+                                | RETORNE Expr ';'
+                                | LEIA LValueExpr ';'
+                                | ESCREVA Expr ';'
+                                | ESCREVA CONST_STRING ';'
+                                | NOVALINHA ';'
+                                | SE '(' Expr ')' ENTAO Comando
+                                | SE '(' Expr ')' ENTAO Comando SENAO Comando
+                                | ENQUANTO '(' Expr ')' EXECUTE Comando
                                 | Bloco
                                 ;
 Expr                    :       AssignExpr
                                 ;
 AssignExpr              :       CondExpr
-                                | LValueExpr '=' AssignExpr
+                                | LValueExpr ASSIGN AssignExpr
                                 ;
 CondExpr                :       OrExpr
                                 | OrExpr '?' Expr ':' CondExpr
                                 ;
-OrExpr                  :       OrExpr ou AndExpr
+OrExpr                  :       OrExpr OU AndExpr
                                 | AndExpr
                                 ;
-AndExpr                 :       AndExpr e EqExpr
+AndExpr                 :       AndExpr E EqExpr
                                 | EqExpr
                                 ;
-EqExpr                  :       EqExpr '=''=' DesigExpr
-                                | EqExpr '!''=' DesigExpr
+EqExpr                  :       EqExpr EQ DesigExpr
+                                | EqExpr DIFF DesigExpr
                                 | DesigExpr
                                 ;
 DesigExpr               :       DesigExpr '<' AddExpr
                                 | DesigExpr '>' AddExpr
-                                | DesigExpr '>''=' AddExpr
-                                | DesigExpr '<''=' AddExpr
+                                | DesigExpr GE AddExpr
+                                | DesigExpr LE AddExpr
                                 | AddExpr
                                 ;
 AddExpr                 :       AddExpr '+' MulExpr
@@ -112,15 +112,15 @@ UnExpr                  :       '-'PrimExpr
                                 | '!'PrimExpr
                                 | PrimExpr
                                 ;
-LValueExpr              :       ID '[' Expr ']'
-                                | ID
+LValueExpr              :       IDENTIFICADOR '[' Expr ']'
+                                | IDENTIFICADOR
                                 ;
-PrimExpr                :       ID '(' ListExpr ')'
-                                | ID '('')'
-                                | ID '[' Expr ']'
-                                | ID
-                                | carconst
-                                | intconst
+PrimExpr                :       IDENTIFICADOR '(' ListExpr ')'
+                                | IDENTIFICADOR '('')'
+                                | IDENTIFICADOR '[' Expr ']'
+                                | IDENTIFICADOR
+                                | CONST_STRING
+                                | INTCONST
                                 | '(' Expr ')'
                                 ;
 ListExpr                :       AssignExpr
