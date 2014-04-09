@@ -17,12 +17,34 @@ void yyerror( char const *s);
 
 %start Programa /* Inidica que o simbolo incial da gramatica e programm */  
 
-%token ESCREVA LEIA OU RETORNE ENQUANTO SE SENAO EXECUTE ENTAO PROGRAMA NOVALINHA CONST_STRING INTCONST TYPE_CAR TYPE_INT IDENTIFICADOR E ASSIGN DIFF EQ GE LE/* Definicao de terminais (que não apenas caracteres), com o uso da diretiva
-                              %token. Ha outras opcoes para definicao de tokens (especificando ordem de associacao e 
-			      prescedencia de operadores -  ver secao 3.2 do manual do Bison*/
+%token  ESCREVA 
+        LEIA 
+        OU 
+        RETORNE 
+        ENQUANTO 
+        SE 
+        SENAO 
+        EXECUTE 
+        ENTAO 
+        PROGRAMA 
+        NOVALINHA 
+        CONST_STRING 
+        INTCONST 
+        TYPE_CAR 
+        TYPE_INT 
+        IDENTIFICADOR 
+        E 
+        ASSIGN 
+        DIFF 
+        EQ 
+        GE 
+        LE
 
-/* Pode haver mais de uma secao prologo e mais de uma secao de definicoes do Bison. 
-   Estas secoes podem aparecer intercaladas entre si. Ver Secao 3.1.1 */
+/*      Definicao de terminais (que não apenas caracteres), com o uso da diretiva %token.
+        Ha outras opcoes para definicao de tokens (especificando ordem de associacao e prescedencia 
+        de operadores -  ver secao 3.2 do manual do Bison */
+/*      Pode haver mais de uma secao prologo e mais de uma secao de definicoes do Bison. 
+        Estas secoes podem aparecer intercaladas entre si. Ver Secao 3.1.1 */
 
 %%  /* Secao de regras - producoes da gramatica - Veja as normas de formação de produçoes na secao 3.3 do manual */
 
@@ -130,25 +152,28 @@ ListExpr                :       AssignExpr
 %% /* Secao Epilogo*/	
 
 void yyerror( char const *s) {
-    if(erroOrigem==0) /*Erro lexico*/
-    {
+    if (erroOrigem == 0) /*Erro lexico*/ {
         printf("%s na linha %d - token: %s\n", s, numLinha, yytext);
-    }
-    else
-    {
+    } else {
         printf("Erro sintatico proximo a %s ", yytext);
 	printf(" - linha: %d \n", numLinha); 
 	erroOrigem=1;
     }
+
     exit(1);
 }
 
 
-int main(int argc, char** argv){
-   if(argc!=2)
-        yyerror("Uso correto: ./simpleLang nome_arq_entrada");
+int main(int argc, char** argv) {
+   if (argc != 2) {
+        printf("Uso correto: ./analisador nome_arq_entrada\n");
+        exit(1);
+   }
+   
    yyin=fopen(argv[1], "r");
-   if(!yyin)
+   if (!yyin) {
         yyerror("arquivo não pode ser aberto\n");
+   }
+
    return yyparse();
 }
