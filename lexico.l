@@ -33,11 +33,11 @@ ASSIGNMENT [^<>!=]=[^<>!=]
                                     qualquer caractere que nao seja * ou \n */
 
 <comentario>"*"+[^/\n]  
-<comentario><<EOF>> {
-                    strcpy(msg, "Erro: comentario nao termina");
-		    yyerror(msg);
-                    erroOrigem = 1;
-                  }
+<comentario><<EOF>> 	{
+				strcpy(msg, "Erro: comentario nao termina");
+				yyerror(msg);
+				erroOrigem = 1;
+			}
 <comentario>\n numLinha++;    
 <comentario>"*"+"/"    BEGIN(INITIAL);  
      
