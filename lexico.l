@@ -52,6 +52,8 @@ ASSIGNMENT [^<>!=]=[^<>!=]
 
 "}"			return '}';
 
+","                     return ',';
+
 "<="	                return LE;
 
 ">="			return GE;
@@ -97,6 +99,8 @@ ASSIGNMENT [^<>!=]=[^<>!=]
 "senao"			return SENAO;
 
 "execute"		return EXECUTE;
+
+";"                     return ';';
 
 {STRING_DOUBLE}		return CONST_STRING;
 
