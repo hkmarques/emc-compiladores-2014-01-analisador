@@ -8,7 +8,7 @@
 char msg[500];
 extern void yyerror(char *s); 
 int numLinha=1;
-
+int erroOrigem=0;
 %}
 
 /*Secao do Flex destinada a definicoes regulares */
@@ -36,6 +36,7 @@ ASSIGNMENT [^<>!=]=[^<>!=]
 <comentario><<EOF>> {
                     strcpy(msg, "Erro: comentario nao termina");
 		    yyerror(msg);
+                    erroOrigem = 1;
                   }
 <comentario>\n numLinha++;    
 <comentario>"*"+"/"    BEGIN(INITIAL);  
@@ -112,6 +113,7 @@ ASSIGNMENT [^<>!=]=[^<>!=]
 
 .			{ 
 				printf("Caractere invalido na linha %d: %s\n", numLinha, yytext);
+                                erroOrigem = 1;
 				exit(1);
 			}		
 
