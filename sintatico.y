@@ -17,7 +17,7 @@ void yyerror( char const *s);
 
 %start Programa /* Inidica que o simbolo incial da gramatica e programm */  
 
-%token escreva leia ou retorne enquanto se senao execute entao programa novalinha carconst intconst car ID cadeiaCaracteres e/* Definicao de terminais (que não apenas caracteres), com o uso da diretiva
+%token escreva leia ou retorne enquanto inteiro se senao execute entao programa novalinha carconst intconst car ID cadeiaCaracteres e/* Definicao de terminais (que não apenas caracteres), com o uso da diretiva
                               %token. Ha outras opcoes para definicao de tokens (especificando ordem de associacao e 
 			      prescedencia de operadores -  ver secao 3.2 do manual do Bison*/
 
@@ -57,7 +57,7 @@ ListaDeclVar            :
                                 | Tipo ID DeclVar ';' ListaDeclVar
                                 | Tipo ID intconst DeclVar ';' ListaDeclVar
                                 ;
-Tipo                    :       int
+Tipo                    :       inteiro
                                 | car
                                 ;
 ListaComando            :       Comando
