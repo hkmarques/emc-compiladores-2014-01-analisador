@@ -11,11 +11,12 @@ extern FILE* yyin;
 extern int erroOrigem;
 void yyerror( char const *s);
 %}
+
 /* Secao de definicoes para o Bison 
  define os simbolos usados na gramatica e tipos dos valores
  semanticos associados a cada simbolo (terminal e não terminal)*/ 
 
-%start Programa /* Inidica que o simbolo incial da gramatica e programm */  
+%start 	Programa /* Inidica que o simbolo incial da gramatica e programm */  
 
 %token  ESCREVA 
         LEIA 
@@ -48,9 +49,9 @@ void yyerror( char const *s);
 
 %%  /* Secao de regras - producoes da gramatica - Veja as normas de formação de produçoes na secao 3.3 do manual */
 
-Programa 		:	DeclFuncVar
-				| DeclProg
-				;
+Programa 		        :	    DeclFuncVar
+				                | DeclProg
+				                ;
 DeclFuncVar             :       Tipo IDENTIFICADOR DeclVar ';' DeclFuncVar
                                 | Tipo IDENTIFICADOR INTCONST DeclVar ';' DeclFuncVar
                                 | Tipo IDENTIFICADOR DeclFunc DeclFuncVar
