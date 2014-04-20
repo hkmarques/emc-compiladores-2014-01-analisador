@@ -4,10 +4,10 @@
 #include <stdlib.h>
 #include <strings.h>
 #include "sintatico.h"
-extern char * yytext;
+extern char *yytext;
 extern int yylex();
 extern int numLinha;
-extern FILE* yyin;
+extern FILE *yyin;
 extern int erroOrigem;
 void yyerror( char const *s);
 %}
@@ -49,18 +49,17 @@ void yyerror( char const *s);
 
 %%  /* Secao de regras - producoes da gramatica - Veja as normas de formação de produçoes na secao 3.3 do manual */
 
-Programa 		        :	    DeclFuncVar
-				                | DeclProg
+Programa 		        :	    DeclFuncVar DeclProg
 				                ;
 DeclFuncVar             :       Tipo IDENTIFICADOR DeclVar ';' DeclFuncVar
-                                | Tipo IDENTIFICADOR INTCONST DeclVar ';' DeclFuncVar
+                                | Tipo IDENTIFICADOR '[' INTCONST ']' DeclVar ';' DeclFuncVar
                                 | Tipo IDENTIFICADOR DeclFunc DeclFuncVar
                                 |
                                 ;
 DeclProg                :       PROGRAMA Bloco
                                 ;
 DeclVar                 :       ',' IDENTIFICADOR DeclVar
-                                | ',' IDENTIFICADOR INTCONST DeclVar
+                                | ',' IDENTIFICADOR '[' INTCONST ']' DeclVar
                                 |
                                 ;
 DeclFunc                :       '(' ListaParametros ')' Bloco
@@ -78,7 +77,7 @@ Bloco                   :       '{' ListaDeclVar ListaComando '}'
                                 ;
 ListaDeclVar            :       
                                 | Tipo IDENTIFICADOR DeclVar ';' ListaDeclVar
-                                | Tipo IDENTIFICADOR INTCONST DeclVar ';' ListaDeclVar
+                                | Tipo IDENTIFICADOR '[' INTCONST ']' DeclVar ';' ListaDeclVar
                                 ;
 Tipo                    :       TYPE_INT
                                 | TYPE_CAR
