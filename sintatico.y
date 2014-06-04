@@ -17,7 +17,7 @@ void yyerror( char const *s);
 
 %start Programa /* Inidica que o simbolo incial da gramatica e programm */  
 
-%token  ESCREVA 
+%token  ESCREVA
         LEIA 
         OU 
         RETORNE 
@@ -34,7 +34,6 @@ void yyerror( char const *s);
         TYPE_INT 
         IDENTIFICADOR 
         E 
-        ASSIGN 
         DIFF 
         EQ 
         GE 
@@ -48,44 +47,54 @@ void yyerror( char const *s);
 
 %%  /* Secao de regras - producoes da gramatica - Veja as normas de formação de produçoes na secao 3.3 do manual */
 
-Programa 		:	DeclFuncVar
-				| DeclProg
-				;
-DeclFuncVar             :       Tipo IDENTIFICADOR DeclVar ';' DeclFuncVar
+Programa:                       DeclFuncVar DeclProg
+                                ;
+
+DeclFuncVar:                    Tipo IDENTIFICADOR DeclVar ';' DeclFuncVar
                                 | Tipo IDENTIFICADOR INTCONST DeclVar ';' DeclFuncVar
                                 | Tipo IDENTIFICADOR DeclFunc DeclFuncVar
                                 |
                                 ;
-DeclProg                :       PROGRAMA Bloco
+
+DeclProg:                       PROGRAMA Bloco
                                 ;
-DeclVar                 :       ',' IDENTIFICADOR DeclVar
+                        
+DeclVar:                        ',' IDENTIFICADOR DeclVar
                                 | ',' IDENTIFICADOR INTCONST DeclVar
                                 |
                                 ;
-DeclFunc                :       '(' ListaParametros ')' Bloco
+
+DeclFunc:                       '(' ListaParametros ')' Bloco
                                 ;
-ListaParametros         :       
+
+ListaParametros:                
                                 | ListaParametrosCont
                                 ;
-ListaParametrosCont     :       Tipo IDENTIFICADOR
-                                | Tipo IDENTIFICADOR '['']'
+
+ListaParametrosCont:            Tipo IDENTIFICADOR
+                                | Tipo IDENTIFICADOR '[' ']'
                                 | Tipo IDENTIFICADOR ',' ListaParametrosCont
-                                | Tipo IDENTIFICADOR '['']' ',' ListaParametrosCont
+                                | Tipo IDENTIFICADOR '[' ']' ',' ListaParametrosCont
                                 ;
-Bloco                   :       '{' ListaDeclVar ListaComando '}'
+
+Bloco:                          '{' ListaDeclVar ListaComando '}'
                                 | '{' ListaDeclVar '}'
                                 ;
-ListaDeclVar            :       
+
+ListaDeclVar:                   
                                 | Tipo IDENTIFICADOR DeclVar ';' ListaDeclVar
                                 | Tipo IDENTIFICADOR INTCONST DeclVar ';' ListaDeclVar
                                 ;
-Tipo                    :       TYPE_INT
+
+Tipo:                           TYPE_INT
                                 | TYPE_CAR
                                 ;
-ListaComando            :       Comando
+
+ListaComando:                   Comando
                                 | Comando ListaComando
                                 ;
-Comando                 :       ';'
+
+Comando:                        ';'
                                 | Expr ';'
                                 | RETORNE Expr ';'
                                 | LEIA LValueExpr ';'
@@ -97,56 +106,69 @@ Comando                 :       ';'
                                 | ENQUANTO '(' Expr ')' EXECUTE Comando
                                 | Bloco
                                 ;
-Expr                    :       AssignExpr
+
+Expr:                           AssignExpr
                                 ;
-AssignExpr              :       CondExpr
-                                | LValueExpr ASSIGN AssignExpr
+
+AssignExpr:                     CondExpr
+                                | LValueExpr '=' AssignExpr
                                 ;
-CondExpr                :       OrExpr
+
+CondExpr:                       OrExpr
                                 | OrExpr '?' Expr ':' CondExpr
                                 ;
-OrExpr                  :       OrExpr OU AndExpr
+
+OrExpr:                         OrExpr OU AndExpr
                                 | AndExpr
                                 ;
-AndExpr                 :       AndExpr E EqExpr
+
+AndExpr:                        AndExpr E EqExpr
                                 | EqExpr
                                 ;
-EqExpr                  :       EqExpr EQ DesigExpr
+
+EqExpr:                         EqExpr EQ DesigExpr
                                 | EqExpr DIFF DesigExpr
                                 | DesigExpr
                                 ;
-DesigExpr               :       DesigExpr '<' AddExpr
+
+DesigExpr:                      DesigExpr '<' AddExpr
                                 | DesigExpr '>' AddExpr
                                 | DesigExpr GE AddExpr
                                 | DesigExpr LE AddExpr
                                 | AddExpr
                                 ;
-AddExpr                 :       AddExpr '+' MulExpr
+
+AddExpr:                        AddExpr '+' MulExpr
                                 | AddExpr '-' MulExpr
                                 | MulExpr
                                 ;
-MulExpr                 :       MulExpr '*' UnExpr
+
+MulExpr:                        MulExpr '*' UnExpr
                                 | MulExpr '/' UnExpr
                                 | MulExpr '%' UnExpr
                                 | UnExpr
                                 ;
-UnExpr                  :       '-'PrimExpr
-                                | '!'PrimExpr
+
+UnExpr:                         '-' PrimExpr
+                                | '!' PrimExpr
                                 | PrimExpr
                                 ;
-LValueExpr              :       IDENTIFICADOR '[' Expr ']'
+
+LValueExpr:                     IDENTIFICADOR '[' Expr ']'
                                 | IDENTIFICADOR
                                 ;
-PrimExpr                :       IDENTIFICADOR '(' ListExpr ')'
-                                | IDENTIFICADOR '('')'
+
+PrimExpr:                       IDENTIFICADOR '(' ListExpr ')'
+                                | IDENTIFICADOR '(' ')'
                                 | IDENTIFICADOR '[' Expr ']'
                                 | IDENTIFICADOR
                                 | CONST_STRING
                                 | INTCONST
                                 | '(' Expr ')'
                                 ;
-ListExpr                :       AssignExpr
-                                | ListExpr ','AssignExpr
+
+ListExpr:                       AssignExpr
+                                | ListExpr ',' AssignExpr
                                 ;
 
 %% /* Secao Epilogo*/	

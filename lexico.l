@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include <strings.h>
 #include "sintatico.h"
+
 char msg[500];
-extern void yyerror(char *s); 
 int erroOrigem = 1, numLinha = 1;
 %}
 
@@ -15,16 +15,16 @@ int erroOrigem = 1, numLinha = 1;
 DIGIT [0-9]
 CHAR [a-zA-Z]
 ID [_a-zA-Z][_a-zA-Z0-9]*
-STRING_DOUBLE \"[^([^\]\")]*\"
-STRING_SINGLE \'[^([^\]\')]*\'
-ASSIGNMENT [^<>!=]=[^<>!=]
+STRING_DOUBLE \"(\\.|[^\\"])*\"
+STRING_SINGLE \'(\\.|[^\\'])*\'
 %x comentario
 
 %%
 
 {DIGIT}+    {
- 	             /* yytext armazena o lexema encontrado na entrada*/	
-				return INTCONST;  /* numero inteiro correspondente ao token encontrado*/
+                /* yytext armazena o lexema encontrado na entrada*/
+                //sscanf(yytext, "%d", &yylval->value);
+                return INTCONST;  /* numero inteiro correspondente ao token encontrado*/
 	    }
 
 "/*"		    BEGIN(comentario);
@@ -60,7 +60,7 @@ ASSIGNMENT [^<>!=]=[^<>!=]
 
 "=="			return EQ;
 
-{ASSIGNMENT}		return ASSIGN;
+"="	 		return '=';
 
 "!="			return DIFF;
 
@@ -75,6 +75,8 @@ ASSIGNMENT [^<>!=]=[^<>!=]
 "*"			return '*';
 
 "/"			return '/';
+
+"%"			return '%';
 
 "programa"	        return PROGRAMA;
 
@@ -102,15 +104,21 @@ ASSIGNMENT [^<>!=]=[^<>!=]
 
 ";"                     return ';';
 
-{STRING_DOUBLE}		return CONST_STRING;
+{STRING_DOUBLE}		{
+				        return CONST_STRING;
+			        }
 
-{STRING_SINGLE}		return CONST_STRING;
+{STRING_SINGLE}		{
+				        return CONST_STRING;
+			        }
 
-{ID}                    return IDENTIFICADOR;
+{ID}                {
+				        return IDENTIFICADOR;
+			        }
 
-\n 			numLinha++;
+[\n] 			numLinha++;
 
-[ \t]+ 			; /* consome caracteres de espaco */
+[ \t\r]+ 			; /* consome caracteres de espaco */
 
 <<EOF>> 		return(EOF);
 
@@ -122,4 +130,6 @@ ASSIGNMENT [^<>!=]=[^<>!=]
 
 %%
 
-int yywrap(){return 1;}
+int yywrap(void) {
+	return 1;
+}

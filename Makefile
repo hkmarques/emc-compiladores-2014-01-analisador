@@ -7,7 +7,7 @@ lexico.o: lexico.c
 lexico.c: lexico.l
 	flex -olexico.c lexico.l
 sintatico.c: sintatico.y
-	bison -d -osintatico.c sintatico.y
+	bison -do sintatico.c sintatico.y
 clean:
 	rm *.o lexico.c sintatico.c sintatico.h analisador
 
